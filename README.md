@@ -4,6 +4,18 @@ ARE WE NEGAN?
 
 System for share resources between non-infected humans
 
+* [Info Resources](#info-resources)
+* [List Survivors](#list-survivors)
+* [Add Survivors](#add-survivors)
+* [Update Survivor Location](#update-survivor-location)
+* [Flag Survivor as Infected](#flag-survivor-as-infected)
+* [Exchange Resources](#exchange-resources)
+* [Percentage of infected survivors](#percentage-of-infected-survivors)
+* [Percentage of non-infected survivors](#percentage-of-non-infected-survivors)
+* [Average Resources By Survivor](#average-resources-by-survivor)
+* [Points lost because of infected survivors](#points-lost-because-of-infected-survivors)
+* [Testing with RSpec](#testing-with-rspec)
+
 ## Example
 
 [ZSSN API on Heroku](https://zssn-api-kadusim.herokuapp.com)
@@ -12,35 +24,35 @@ System for share resources between non-infected humans
 
 1. Clone the project.
 
-	```
-		https://kadusim@bitbucket.org/kadusim/zssn-api.git
-	```
+````
+https://kadusim@bitbucket.org/kadusim/zssn-api.git
+````
 
 2. Bundle the Gems.
 
-	```
-		bundle install
-	```
+````bash
+bundle install
+````
 
 3. Default resources.
 
-	```
-  	rails db:create
-  ```
+````bash
+rails db:create
+````
 
-	```
-  	rails db:migration
-  ```
+````bash
+rails db:migration
+````
 
-	```
-  	rails db:seed
-  ```
+````bash
+rails db:seed
+````
 
 4. Start the application
 
-	```
-		rails s
-	```
+````bash
+rails s
+````
 
 Application will be runing at [localhost:3000](http://localhost:3000).
 
@@ -50,65 +62,65 @@ Application will be runing at [localhost:3000](http://localhost:3000).
 
 ##### Request
 
-```sh
+````
 GET api/resources`
-```
+````
 
 ##### Response
 
-```sh
+````
 status: 200 Ok
-```
+````
 
-```sh
+````
 Content-Type: "application/json"
-```
+````
 
-```sh
+````json
 Body:
 [
 	{
-		id: 1,
-		item: "water",
-		value: 4
+		"id": 1,
+		"item": "water",
+		"value": 4
 	},
 	{
-		id: 2,
-		item: "food",
-		value: 3
+		"id": 2,
+		"item": "food",
+		"value": 3
 	},
 	{
-		id: 3,
-		item: "medication",
-		value: 2
+		"id": 3,
+		"item": "medication",
+		"value": 2
 	},
 	{
-		id: 4,
-		item: "ammunition",
-		value: 1
+		"id": 4,
+		"item": "ammunition",
+		"value": 1
 	}
 ]
-```
+````
 
 ### List Survivors
 
 ##### Request
 
-```sh
+````
 GET api/survivors`
-```
+````
 
 ##### Response
 
-```sh
+````
 status: 200 Ok
-```
+````
 
-```sh
+````
 Content-Type: "application/json"
-```
+````
 
-```sh
+````json
 Body:
 [
     {
@@ -155,17 +167,17 @@ Body:
         ]
     }
 ]
-```
+````
 
 ### Add Survivors
 
 ##### Request
 
-```sh
+````
 POST api/survivors`
-```
+````
 
-```sh
+````json
 Parameters:
 {
     "survivor": {
@@ -186,19 +198,19 @@ Parameters:
       }
     }
 }
-```
+````
 
 ##### Response
 
-```sh
+````
 status: 201 created
-```
+````
 
-```sh
+````
 Content-Type: "application/json"
-```
+````
 
-```sh
+````json
 Body:
 {
     "id": 5,
@@ -246,7 +258,7 @@ Body:
         }
     ]
 }
-```
+````
 
 ##### Errors
 Status | Error                | Message
@@ -257,11 +269,11 @@ Status | Error                | Message
 
 ##### Request
 
-```sh
+````
 PATCH/PUT api/survivors/:id
-```
+````
 
-```sh
+````json
 Parameters:
 {
     "survivor": {
@@ -269,17 +281,17 @@ Parameters:
       "longitude": "78.8210282"
     }
 }
-```
+````
 
 ##### Response
 
-```sh
+````
 status: 204 no_content
-```
+````
 
-```sh
+````
 Content-Type: "application/json"
-```
+````
 
 ##### Errors
 Status | Error      |
@@ -290,26 +302,35 @@ Status | Error      |
 
 ##### Request
 
-```sh
+````
 POST api/infected_report
-```
+````
+
+````json
+Parameters:
+Body:
+{
+	"survivor_id": 2,
+	"reporter_id": 4
+}
+````
 
 ##### Response
 
-```sh
+````
 status: 201 created
-```
+````
 
-```sh
+````
 Content-Type: "application/json"
-```
+````
 
-```sh
+````json
 Body:
 {
   	"message": "Survivor reported successfully"
 }
-```
+````
 
 ##### Errors
 Status | Error                | Description
@@ -322,11 +343,11 @@ Status | Error                | Description
 
 ##### Request
 
-```sh
+````
 POST api/exchanges
-```
+````
 
-```sh
+````json
 Parameters:
 {
     "exchanges": {
@@ -354,24 +375,24 @@ Parameters:
       }
     }
 }
-```
+````
 
 ##### Response
 
-```sh
+````
 status: 200 ok
-```
+````
 
-```sh
+````
 Content-Type: "application/json"
-```
+````
 
-```sh
+````json
 Body:
 {
   "message": "Successful exchange"
 }
-```
+````
 
 ##### Errors
 Status | Error                | Message
@@ -388,87 +409,87 @@ Status | Error                | Message
 
 ##### Request
 
-```sh
+````
 GET api/reports/percentage_infected_survivors
-```
+````
 
 ##### Response
 
-```sh
+````
 status: 200 ok
-```
+````
 
-```sh
+````
 Content-Type: "application/json"
-```
+````
 
-```sh
+````json
 Body:
 {
   "percentage": "50.0"
 }
-```
+````
 
-```sh
 status: 200 ok if no survivors
+````json
 Body:
 {
   "message": "No survivors found"
 }
-```
+````
 
 ### Percentage of non-infected survivors
 
 ##### Request
 
-```sh
+````
 GET api/reports/percentage_non_infected_survivors
-```
+````
 
 ##### Response
 
-```sh
+````
 status: 200 ok
-```
+````
 
-```sh
+````
 Content-Type: "application/json"
-```
+````
 
-```sh
+````json
 Body:
 {
   "percentage": "50.0"
 }
-```
+````
 
-```sh
 status: 200 ok if no survivors
+````json
 Body:
 {
   "message": "No survivors found"
 }
-```
+````
 
 ### Average Resources By Survivor
 
 ##### Request
 
-```sh
+````
 GET api/reports/average_resources_by_survivor
-```
+````
 
 ##### Response
 
-```sh
+````
 status: 200 ok
-```
+````
 
-```sh
+````
 Content-Type: "application/json"
-```
+````
 
-```sh
+````json
 Body:
 {
   averages: {
@@ -478,55 +499,55 @@ Body:
 	  ammunition: 30
   }
 }
-```
+````
 
-```sh
 status: 200 ok if no survivors
+````json
 Body:
 {
   "message": "No survivors found"
 }
-```
+````
 
 ### Points lost because of infected survivors
 
 ##### Request
 
-```sh
+````
 GET api/reports/points_lost_because_infected
-```
+````
 
 ##### Response
 
-```sh
+````
 status: 200 ok
-```
+````
 
-```sh
+````
 Content-Type: "application/json"
-```
+````
 
-```sh
+````json
 Body:
 {
   "points_lost": 100
 }
-```
+````
 
-```sh
 status: 200 ok if no survivors
+````json
 Body:
 {
   "message": "No survivors found"
 }
-```
+````
 
 ## Testing with RSpec
 
 1. Execute all tests
 
-	```
-		rspec
-	```
+````
+rspec
+````
 
 - by [Kadu Simões](https://github.com/kadusim)
