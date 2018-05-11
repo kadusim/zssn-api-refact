@@ -492,11 +492,11 @@ Content-Type: "application/json"
 ````json
 Body:
 {
-  averages: {
-	  water: 10,
-	  food: 5,
-	  medication: 2,
-	  ammunition: 30
+  "averages": {
+	  "water": 10,
+	  "food": 5,
+	  "medication": 2,
+	  "ammunition": 30
   }
 }
 ````
