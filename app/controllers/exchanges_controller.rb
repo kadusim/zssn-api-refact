@@ -2,8 +2,9 @@ class ExchangesController < ApplicationController
 
   api :POST, 'api/exchanges', 'Exchange Resources'
   def create
-    ExchangerService.call(exchange_parms)
-    json_response({ message: 'Successful exchange' })
+    if ExchangerService.call(exchange_parms)
+      json_response({ message: 'Successful exchange' })
+    end
   end
 
   private

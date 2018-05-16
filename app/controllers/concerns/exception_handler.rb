@@ -4,6 +4,7 @@ module ExceptionHandler
   class SurviroIsInfected     < StandardError; end
   class NoHaveEnoughResources < StandardError; end
   class ResourcesNotMatching  < StandardError; end
+  class ExchangeServiceError  < StandardError; end
 
   included do
     rescue_from ActiveRecord::RecordNotFound do |e|
@@ -24,6 +25,10 @@ module ExceptionHandler
 
     rescue_from ExceptionHandler::ResourcesNotMatching do |e|
       json_response({ message: e.message }, :unauthorized)
+    end
+
+    rescue_from ExceptionHandler::ExchangeServiceError do |e|
+      json_response({ message: e.message }, :unprocessable_entity)
     end
   end
 end
