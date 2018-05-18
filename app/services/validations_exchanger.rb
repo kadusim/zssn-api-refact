@@ -20,18 +20,16 @@ class ValidationsExchanger < Exchanger
 
   def check_survivors_have_enough_resources
     survivors.each_with_index do |survivor, index|
-      check_enough_resources(survivor, index)
-    end
-  end
 
-  def check_enough_resources(survivor, index)
-    survivors_change_resources[index][:resources].each do |resource_change|
+      survivors_change_resources[index][:resources].each do |resource_change|
 
-      quantity_resources_change    = resource_change[:quantity].to_i
-      quantity_resources_inventory = survivor.inventory_resources.where(resource_id: resource_change[:resource_id]).count
+        quantity_resources_change    = resource_change[:quantity].to_i
+        quantity_resources_inventory = survivor.inventory_resources.where(resource_id: resource_change[:resource_id]).count
 
-      if quantity_resources_change > quantity_resources_inventory
-        raise ExceptionHandler::NoHaveEnoughResources, ("Survivor id: #{survivor.id} no have enough resources for exchange")
+        if quantity_resources_change > quantity_resources_inventory
+          raise ExceptionHandler::NoHaveEnoughResources, ("Survivor id: #{survivor.id} no have enough resources for exchange")
+        end
+
       end
 
     end
@@ -43,8 +41,11 @@ class ValidationsExchanger < Exchanger
     survivors.each_with_index do |survivor, index|
 
       survivors_change_resources[index][:resources].each do |resource_change|
-        resource_value                           = resources.find(resource_change[:resource_id]).value
-        resources_survivors_total_values[index] += resource_change[:quantity].to_i * resource_value
+        resource_id                              = resource_change[:resource_id]
+        quantity_resources_change                = resource_change[:quantity].to_i
+        resource_value                           = resources.find(resource_id).value
+
+        resources_survivors_total_values[index] += quantity_resources_change * resource_value
       end
 
     end
@@ -53,7 +54,10 @@ class ValidationsExchanger < Exchanger
   end
 
   def check_survivors_values_items_matching(resources_survivors_total_values)
-    if resources_survivors_total_values[0] != resources_survivors_total_values[1]
+    resources_total_value_survivor_one = resources_survivors_total_values[0]
+    resources_total_value_survivor_two = resources_survivors_total_values[1]
+
+    if resources_total_value_survivor_one != resources_total_value_survivor_two 
       raise ExceptionHandler::ResourcesNotMatching, ("An exchange must be made with the same amount of points")
     end
   end
