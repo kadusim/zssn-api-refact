@@ -129,6 +129,7 @@ RSpec.describe 'Request Exchanges', type: :request do
       end
 
       it 'survivor one inventory with changed resources' do
+        survivor_one.inventory_resources.reload
         expect(survivor_one.inventory.resources.size).to eq(2)
         expect(survivor_one.inventory.resources).to match_array([water, ammunition])
       end
