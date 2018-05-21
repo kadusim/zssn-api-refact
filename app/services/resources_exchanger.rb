@@ -1,17 +1,15 @@
-class ResourcesExchanger < Exchanger
-  attr :resource_id, :resource_quantity
+class ResourcesExchanger
+  attr :exchanger_parms
 
-  def initialize(exchange_parms)
-    super
+  def initialize(exchanger_parms)
+    @exchanger_parms = exchanger_parms
   end
 
   def exchange
     InventoryResource.transaction do
-      survivor_one_change_resources = survivors_change_resources[0][:resources]
-      survivor_two_change_resources = survivors_change_resources[1][:resources]
       begin
-        exchange_resources(survivor_change_resources: survivor_one_change_resources, survivor_of: survivor_one, survivor_to: survivor_two)
-        exchange_resources(survivor_change_resources: survivor_two_change_resources, survivor_of: survivor_two, survivor_to: survivor_one)
+        exchange_resources(survivor_change_resources: exchanger_parms.survivor_one_exchange_resources, survivor_of: exchanger_parms.survivor_one, survivor_to: exchanger_parms.survivor_two)
+        exchange_resources(survivor_change_resources: exchanger_parms.survivor_two_exchange_resources, survivor_of: exchanger_parms.survivor_two, survivor_to: exchanger_parms.survivor_one)
       rescue Exception => message_error
         raise ExceptionHandler::ExchangeServiceError, (message_error)
       end
@@ -23,21 +21,13 @@ class ResourcesExchanger < Exchanger
 
   def exchange_resources(survivor_change_resources:, survivor_of:, survivor_to:)
     survivor_change_resources.each do |resource_change|
-      @resource_id       = resource_change[:resource_id].to_i
-      @resource_quantity = resource_change[:quantity].to_i
+      resource_id       = resource_change[:resource_id].to_i
+      resource_quantity = resource_change[:quantity].to_i
 
-      delete_resources_of_inventory(survivor_of)
+      survivor_of.inventory.inventory_resources.delete_resources!(resource_id: resource_id, resource_quantity: resource_quantity)
 
-      add_resources_to_inventory(survivor_to)
+      survivor_to.inventory.inventory_resources.add_resources!(resource_id: resource_id, resource_quantity: resource_quantity)
     end
-  end
-
-  def delete_resources_of_inventory(survivor_of)
-    survivor_of.inventory.inventory_resources.delete_resources!(resource_id: resource_id, resource_quantity: resource_quantity)
-  end
-
-  def add_resources_to_inventory(survivor_to)
-    survivor_to.inventory.inventory_resources.add_resources!(resource_id: resource_id, resource_quantity: resource_quantity)
   end
 
 end

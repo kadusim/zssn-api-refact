@@ -6,6 +6,7 @@ RSpec.describe 'Request Exchanges', type: :request do
   let!(:food)        {create(:resource_food)}
   let!(:medication)  {create(:resource_medication)}
   let!(:ammunition)  {create(:resource_ammunition)}
+
   let(:survivor_one) {create(:survivor_without_resources)}
   let(:survivor_two) {create(:survivor_without_resources)}
 
