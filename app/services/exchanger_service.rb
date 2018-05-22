@@ -6,8 +6,11 @@ class ExchangerService < ApplicationService
   end
 
   def call
-    resources_exchanger = ResourcesExchanger.new(exchange_parms)
-    if resources_exchanger.validations_exchange_resources
+    validator_resources = ValidatorResources.new(exchange_parms)
+    validator_resources.validate
+
+    exchanger_resources = ExchangerResources.new(exchange_parms)
+    if exchanger_resources.exchange
       return true
     end
   end
