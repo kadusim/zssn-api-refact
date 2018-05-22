@@ -18,14 +18,23 @@ class ValidationsExchanger
       end
     end
   end
-
+  
   def check_survivors_have_enough_resources
-    if exchanger_parms.quantity_resources_change_survivor_one > exchanger_parms.quantity_resources_inventory_survivor_one
-      raise ExceptionHandler::NoHaveEnoughResources, ("Survivor id: #{exchanger_parms.survivor_one.id} no have enough resources for exchange")
-    end
+    exchanger_parms.survivors.each_with_index do |survivor, index|
 
-    if exchanger_parms.quantity_resources_change_survivor_two > exchanger_parms.quantity_resources_inventory_survivor_two
-      raise ExceptionHandler::NoHaveEnoughResources, ("Survivor id: #{exchanger_parms.survivor_two.id} no have enough resources for exchange")
+      exchanger_parms.survivors_change_resources[index][:resources].each do |resource_change|
+
+        resource_id                  = resource_change[:resource_id]
+
+        quantity_resources_change    = resource_change[:quantity].to_i
+        quantity_resources_inventory = survivor.inventory.inventory_resources.where(resource_id: resource_id).count
+
+        if quantity_resources_change > quantity_resources_inventory
+          raise ExceptionHandler::NoHaveEnoughResources, ("Survivor id: #{survivor.id} no have enough resources for exchange")
+        end
+
+      end
+
     end
   end
 
