@@ -4,4 +4,6 @@ class Resource < ApplicationRecord
 
   validates :item, :value, presence: true
   validates :item, uniqueness: { case_sensitive: false }
+
+  scope :all_resources, -> { all }
 end

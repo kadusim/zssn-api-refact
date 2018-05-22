@@ -43,7 +43,7 @@ class Survivor < ApplicationRecord
     end
 
     def calculate_average_resources_in_inventories
-      resources = Resource.all
+      resources = Resource.all_resources
       average_resources_in_inventories = {}
 
       resources.each do |resource|
